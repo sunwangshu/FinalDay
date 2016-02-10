@@ -1,0 +1,11 @@
+Below are your stats:
+
+Health: 	${health} percent energetic
+*line_break
+Time to work: 	${time} hours.
+*line_break
+Pages covered: 	${workdone} pages.
+*line_break
+Overall: 	${workload} pages.
+
+

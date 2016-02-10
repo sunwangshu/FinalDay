@@ -1,0 +1,415 @@
+*title Final Day!
+*author Wangshu Sun
+
+*scene_list
+	startup
+	
+*create health 50
+*create workload 220
+*create time 12
+*create speed 20
+*create workdone 0
+
+*create moreToReview true
+*create stayedup false
+
+*create forget true
+*create badluckStayedUp 0
+*create goodluckSleep 0
+
+*create score 45
+
+You wake up in a cloudy morning, realizing that it is the day before your last test. 
+*line_break
+*line_break
+You feel a bit nervous because you need to review these intimidating 220 pages and keep them in mind, and your GPA would be crucial for your future success. You are also a little exciting for the upcoming vacation thereafter, so you really wish to at least pass the test to be able to enjoy it. 
+*line_break
+*line_break
+You will have around 12 hours to work on these 220 pages, but you also need to set some strategies to balance your work with your health.
+*goto food
+
+
+*label food
+*page_break
+As for food, would you like to have some fast food but unhealthy food to save your time? Or you still want to stick to some healthy food, doubling your time for meal?
+
+*choice 
+	# Go for some fast food. It will only take an hour in the whole day.
+		You feed on some oily fast food, it saves a precious one hour compared to your normal diet, but you feel a little uneasy, making you want to have something fresher the next time.
+		*set health -5
+		*set time -1
+		*goto exercise
+	# Go for some healthy food. It will cost two hours in the whole day.
+		You walk a little far to get some good healthy food. It costs more bucks and two hours in your day, but you get some enjoyment on the taste, and you're glad you feel quite refreshed and energetic.
+		*set health +10
+		*set time -2
+		*goto exercise
+
+	
+*label exercise
+*page_break
+Do you think it's best to continue working as long as possible?
+
+*choice 
+	# Yes. I shouldn't waste any of the time. Let me work the fullest.
+		You stay in the study room all the time. You're pround of yourself, feeling satisfied, though near the very end, you start to feel tired and lose focus. 
+		*set health -5
+		*set time -0
+		*goto checkpoint
+	# No. I don't agree.
+		So what's your opinion?
+		*choice 
+			# Never mind...I wish to save my time. Let me work to the fullest.
+				You stay in the study room all the time. You're pround of yourself, feeling satisfied, though near the very end, you start to feel tired and lose focus. 
+				*set health -5
+				*set time -0
+				*goto checkpoint
+			# I think it's better to spend some time rest a little bit.
+				During the day, you spend an hour or two in total, go out for some fresh air several times. It feels good and refreshing, and you feel like you can remain concentrated for longer. 
+				*set health +15
+				*temp time_exercise
+				*rand time_exercise 1 2
+				*set time -time_exercise
+				*goto checkpoint
+			
+
+
+
+*comment	check how much work have you done depending on health. Random additional workload. Decide whether to stay up.
+*label checkpoint
+*page_break
+After all day's work, you realize that it's already late at night.
+*line_break
+*line_break
+*comment	calculate efficiency based on health
+*temp efficiency1
+*if health > 70
+	*set efficiency1 1.2
+	*goto checkwork
+*elsif health > 50
+	*set efficiency1 1.0
+	*goto checkwork
+*elsif health > 30
+	*set efficiency1 0.8
+	*goto checkwork
+*else 
+	*set efficiency1 0.6
+	*goto checkwork
+
+*comment	calculate speed based on efficiency, calculate workdone based on speed
+*label checkwork
+*set speed 20*efficiency1
+*set workdone speed*time
+*if health > 70
+	Amazingly, you feel still kind of energetic.
+	*goto checkstatus
+*elsif health > 50
+	You feel like you still have some energy.
+	*goto checkstatus
+*else
+	You feel tired.
+	*goto checkstatus
+
+*label checkstatus
+*line_break
+To be clear, you feel like you're roughly ${health} percent energetic.
+*line_break
+*line_break
+And to this point, you are very confident about ${workdone} pages out of ${workload} pages.
+*line_break
+*temp percentage
+*set percentage workdone / workload
+*set percentage * 100
+*set percentage round(percentage)
+If converted to percentage, that's ${percentage} percent victory.
+*line_break
+*line_break
+Though you are not 100 percent sure, at least you attended every class and have everything vaguely in mind. Maybe you can rely on your memory for the stuff you're not covered, maybe not. 
+*page_break
+*goto morework
+
+
+*comment	random additional workload (almost never survive)
+*label morework
+*temp luck1
+*rand luck1 0 76
+*if luck1 = 77
+	*set workload +0
+	*set moreToReview false
+	*goto thinktwice
+*else
+	*comment	pretend there's nothing, unless you realize it
+	*set workload +0
+	*set moreToReview true
+	*goto thinktwice
+
+*comment	can you realize the additional workload?
+*label thinktwice
+You can't stop thinking again and again about the key points in this class...
+*line_break
+Could there be anything you forget?...
+*page_break
+
+*temp luck2
+*rand luck2 0 1
+
+*comment if you're too tired then you will possibly forget about it
+*if (luck2 = 1) and (health <= 40) 
+	*rand luck2 0 1
+	*goto tooTiredToRemember
+
+*label tooTiredToRemember
+
+*if luck2 = 0
+	You think not. Everything should all be on those 220 pages of your textbook.
+	*if moreToReview = false
+		*set forget false
+		*goto stayup
+	*else
+		*set forget true
+		*goto stayup
+*else
+	*if moreToReview = false
+		You're very sure there's nothing more than the 220 pages.
+		*set forget false
+		*goto stayup
+	*else
+		You just realize that there's another 40 pages to review! 
+		*line_break
+		Your professor told  about this additional material in the last class!
+		*line_break
+		WTF!
+		*line_break
+		*line_break
+		At least you realized it.
+		*set workload +40
+		*set forget false
+		*goto stayup
+
+*comment	decide whether to stay up or not
+*label stayup
+*page_break
+*temp percentage
+*set percentage workdone / workload
+*set percentage * 100
+*set percentage round(percentage)
+*page_break
+Anyway, it's the time when you usually go to sleep.
+*line_break
+*line_break
+Now you are feeling around ${health} percent energetic.
+*line_break
+And you are prepared for ${workdone} pages out of ${workload} pages, which means you're around ${percentage} percent confident about the test.
+*line_break
+*line_break
+So, do you wish to stay up for the unfinished stuff? 
+*choice 
+	# I'm concerned about it...let me work for extra two hours to finish. Then I'll sleep.
+		You work for extra two hours. You feel tired. 
+		*line_break
+		*line_break
+		But at least, you cover some more pages. At least better than some of your stay-up-in-vain.
+		*line_break
+		*line_break
+		Nice.
+		*set health -20
+		*set time +2
+		*set stayedup true
+		*goto stayup_result1
+	# I think I'm prepared. It's more important to sleep well for my important test. Go to sleep now.
+		Though you are a little bit nervous and exciting, luckily you have a nice sleep before your important final test.
+		*set health +20
+		*set time +0
+		*set stayedup false
+		*goto final
+
+
+*comment	calculate the extra work done when stay up
+*label stayup_result1
+*page_break
+
+*temp efficiency2
+*if health > 70
+	*set efficiency2 1.2
+	*goto stayup_result2
+*elsif health > 50
+	*set efficiency2 1.0
+	*goto stayup_result2
+*elsif health > 30
+	*set efficiency2 0.8
+	*goto stayup_result2
+*else 
+	*set efficiency2 0.6
+	*goto stayup_result2
+
+*label stayup_result2
+*set speed 20*efficiency2
+
+*temp workdone2
+*set workdone2 2*speed
+
+*if (workdone + workdone2) > workload
+	*set workdone2 workload - workdone
+	*set workdone workload
+	*goto stayup_result3
+*else
+	*set workdone +workdone2
+	*goto stayup_result3
+
+*label stayup_result3
+*temp percentage2
+*set percentage2 workdone / workload
+*set percentage2 * 100
+*set percentage2 round(percentage2)
+After the additional two hours, you finish ${workdone2} pages more, and now ${workdone} pages out of the overall ${workload} pages, which means you're around ${percentage2} percent confident about the test.
+*line_break
+*line_break
+Hope you can score at least that amount.
+*goto final
+
+
+*comment	final day!
+*label final
+*page_break
+
+Whether or not you're prepared, the day of your final test, is coming!
+*comment 	something health, prepared maybe, your state
+
+
+*comment response to different activity at last, if you forget then show the additional workload...if you 
+*page_break
+
+*if stayedup = true
+	*if health >= 50
+		Though you stayed up, since you have some energy left yesterday night, you still feel ok about yourself.
+		*line_break
+		*goto finalAluck
+	*elsif health >= 40
+		Though you stayed up, you are feeling not that bad thanks to some of your investments in your health.
+		*line_break
+		*goto finalAluck
+	*else
+		Since you stayed up even when you're exhausted, you're not feeling well.
+		*line_break
+		*goto finalAluck
+*else 
+	Since you slept early the day before, you feel kind of good about yourself.
+	*line_break
+	*goto finalBluck
+
+
+
+*comment	stayup could result in bad luck
+*label finalAluck
+*rand badluckStayedUp 0 1
+*comment 	bad health bad luck
+*if (badluckStayedUp = 0) and (health < 30)
+	*rand badluckStayedUp 0 1
+	*goto finalAluck2
+*else 
+	*goto finalAluck2
+
+*label finalAluck2
+*if	badluckStayedUp = 1
+	*if health >= 50
+		It seems staying up has some minor effect on your test.
+		*set score -3
+		*goto forgetOrNot
+	*elsif health >= 30
+		It seems staying up has a little effect on your test. You can't remember a thing or two.
+		*set score -5
+		*goto forgetOrNot
+	*else
+		You're trying to maintain conscious during your test...
+		*set score -10
+		*goto forgetOrNot
+*elsif badluckStayedUp = 0
+	You feel kind of lucky that you're able to manage to recall almost everything in your mind.
+	*set score -0
+	*goto forgetOrNot
+
+
+
+
+*comment	sleep early could result in good luck
+*label finalBluck
+*rand goodluckSleep 0 1
+*comment 	good health good luck
+*if (goodluckSleep = 0) and (health > 70)
+	*rand goodluckSleep 0 1
+	*goto finalBluck2
+*label finalBluck2
+*if goodluckSleep = 1
+	It seems a good night's sleep has some magic power that you remembered something you aren't sure before.
+	*set score +3
+	*goto forgetOrNot
+*else
+	It seems a good night's sleep gives you some good luck, at least you remember a little stuff, though not very sure.
+	*set score +1
+	*goto forgetOrNot
+
+
+*comment 	if you forget there are some additional materials...here's the time it shows up.
+*label forgetOrNot
+*page_break
+*if forget = true
+	*set workload +40
+	When reading a quiz, you suddenly realize that you actually forget to review some additional 40 pages that your professor told you on the last class...
+	*line_break
+	*line_break
+	WTF!
+	*line_break
+	*line_break
+	Despite the anxiety at first, you try your best to make up something, and manage to continue working on the stuff you know.
+	*goto final_calc
+*else
+	*if moreToReview = true
+		Though you just discovered some additional stuff yesterday night, luckily there is no more surprise during the test.
+		*goto final_calc
+	*else 
+		Luckily the test is all about those normal stuff within the 220 pages. The professor must be in a good mood when making those quizes. Anyway, it's still about how well you are prepared.
+		*goto final_calc
+
+
+
+*label final_calc
+*temp score2
+*set score2 47.5*workdone
+*temp score3
+*set score3 round(score2 / workload)
+*set score +score3
+*page_break
+At last, the test is over! You have some good relax for a couple of days, trying not to think about it, because it's time to enjoy, right?
+*page_break
+Several days later, you know the scores are available now.
+How do you feel about it?
+*fake_choice
+	# Exciting and eager to know the result.
+	# A little bit nervous.
+	# Half-half.
+	# Not special.
+	# Bad.
+
+*label final_result
+*page_break
+
+The score of your final test is: ${score} out of 100!
+*line_break
+*line_break
+*if score >= 95
+	Outstanding! You're so happy now! You're sure you will be enjoying a very nice vacation, and the battle for this last test will become a shining memory in your life.
+	*finish
+*elsif score >= 90
+	Well done! You believe you can enjoy a very nice vacation now from now on! It will also be good for your future success.
+	*finish
+*elsif score >= 85
+	Good job! You can't believe you almost prepared everything just in yesterday! You think you can enjoy a nice vacation from now on.
+	*finish
+*elsif score >= 80
+	The result is beyond your expetation, since you almost prepared everything during yesterday! You think you can enjoy a nice vacation from now on.
+	*finish
+*else
+	The result is not that bad. To be honest, that's amazing, since you almost prepared everything during yesterday! At least you can start enjoying your vacation now.
+	*finish
+
+
