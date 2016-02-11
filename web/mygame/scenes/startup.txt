@@ -19,39 +19,40 @@
 
 *create score 50
 
-You wake up from a weird dream, realizing that it is the day before your last test. 
-*line_break
-*line_break
-You've beaten five other tests in a row. They are not that hard for you, and you think you did them all pretty well. The only thing matter now is this last test, the only class that you devoted so much but still don't get the talent to master. 
-*line_break
-*line_break
-Looking outside the window of your dormitory, you see some students hauling their suitcases, chatting about some exciting plans in their winter break. You are eager for the break as well, wishing to enjoy your time with your friends and your parents. You don't want to let a bad score to ruin your vacation, so you decide to fight hard to survive.
+You wake up from a weird dream, realizing that it is the last day before your final test. 
+
+Some students are chatting outside about some exciting plans for their winter break. You can't wait to go home and meet your friends as well, but you still have this last test, and you don't want a bad score to ruin your mood. Survive this one last day, and then you can enjoy your long nice break.
 *page_break
-Now it's 8 am in the morning, and you will be reviewing some intimidating 220 pages in the textbook of this class. You really wish you could use up all the 16 hours before midnight, but you're not a superman or superwoman, you need time to ride between places, take a shower, think wildly, etc, and at times you can lose focus as well. Then that's normally 12 hours to rely on at max, not to mention you haven't count the time of having food, and maybe more. 
-*line_break
-*line_break
-Time is so precious.
+To make full use of your day, you need to balance between your time and energy. 
+
+Usually the more energetic you are, the higher efficiency you will maintain. But keeping healthy usually means more time, and you could end up leaving a lot of pages unfinished, so you need to make some choices.
 *goto food
 
 
 *label food
 *page_break
-As for food, you can mainly choose between some fast food and some healthy food. Usually you go for something healthy, becuase it will keep you refreshed and maybe concentrate longer, increasing your efficiency in the long run. But those dining spots are all a little far, and they take more time to wait for.
-*line_break
-*line_break
-Since your time is so precious, you feel a little concerned about your normal choice of food. If you go for some fast food, you can save an extra one hour in dining, though the food is a little high in fat and a little too sweet. 
-*line_break
-*line_break
+Though you wish to make use of every minute at hand reviewing your materials, you feel hungry at some point, and you have to spend some time eating. 
+
+As for food, you can mainly choose between some fast food and some healthy food. 
+
+Usually you go for something healthy, it keeps you refreshed and help you concentrate longer, but the dining spots are far and the food takes more time to wait for. 
+
+You can also try some fast food - it is very close to your library and tastes good, the only thing is, it is a little unhealthy, but at least saves a lot of time.
+
 So, what kind of food do you want to take today?
 
 *choice 
 	# I want to have some fast food to save time. Every minute counts!
-		You choose some fast food, it saves a precious one hour compared to your normal diet. But you feel a little uneasy because the food is a little oily and dry, so you go to the fountain and have some drink there. You feel much better then, though not as good as usual. You go back to your seat in the library, and continue going over the pages.
+		You choose some fast food, it saves a precious one hour compared to your normal diet. But you feel a little uneasy because the food is a little oily and dry, so you go to the fountain and have some drink there. You feel much better then. You go back to your seat in the library, and continue going over the pages.
+
+		Uses one hour. Health decreases. 
 		*set health -5
 		*set time -1
 		*goto exercise
 	# I still want to have some healthy food. I think I'm not that urgent.
-		You ride your bike to the spots where you usually get some good healthy food. It costs more bucks and two hours in total in your day. The taste is not super good, but acceptable. At least it's fresh and make you feel energetic. You feel like you can finish the pages a little faster.
+		You ride your bike to the spots where you usually get some good healthy food. It costs more bucks and two hours in total in your day. But it tastes really delicious and comfortable, making you feel more energetic. You feel like you can finish the pages a little faster.
+
+		Uses two hours. Health increases.
 		*set health +10
 		*set time -2
 		*goto exercise
@@ -59,29 +60,29 @@ So, what kind of food do you want to take today?
 	
 *label exercise
 *page_break
-Do you think it's best to continue working as long as possible?
+After reading for an hour or two, you feel kind of distracted. What do you do?
 
 *choice 
-	# Yes. I shouldn't waste any of the time. Let me work the fullest.
+	# I want to work to the fullest, since every minute counts.
 		You stay in the study room all the time. You're pround of yourself, feeling satisfied, though near the very end, you start to feel tired and lose focus. 
+		
+		Saves one hour or two. Health decreases. 
 		*set health -5
 		*set time -0
 		*goto checkpoint
-	# No. I don't agree.
-		So what's your opinion?
-		*choice 
-			# Never mind...I wish to save my time. Let me work to the fullest.
-				You stay in the study room all the time. You're pround of yourself, feeling satisfied, though near the very end, you start to feel tired and lose focus. 
-				*set health -5
-				*set time -0
-				*goto checkpoint
-			# I think it's better to spend some time rest a little bit.
-				During the day, you spend an hour or two in total, go out for some fresh air several times. It feels good and refreshing, and you feel like you can remain concentrated for longer. 
-				*set health +15
-				*temp time_exercise
-				*rand time_exercise 1 2
-				*set time -time_exercise
-				*goto checkpoint
+	# I want to take some break.
+		During the day, you go out for some fresh air several times. It feels good and refreshing, and you feel like you can remain concentrated for longer.
+		
+		*set health +15
+		*temp time_exercise
+		*rand time_exercise 1 2
+		*set time -time_exercise
+		*if time_exercise = 1
+			Takes one hour in total. Health increases.
+			*goto checkpoint
+		*else
+			Takes two hours in total. Health increases.
+			*goto checkpoint
 			
 
 
@@ -90,8 +91,7 @@ Do you think it's best to continue working as long as possible?
 *label checkpoint
 *page_break
 After all day's work, you realize that it's already late at night.
-*line_break
-*line_break
+
 *comment	calculate efficiency based on health
 *temp efficiency1
 *if health > 70
@@ -122,21 +122,6 @@ After all day's work, you realize that it's already late at night.
 	*goto checkstatus
 
 *label checkstatus
-*line_break
-To be clear, you feel like you're roughly ${health} percent energetic.
-*line_break
-*line_break
-And to this point, you are very confident about ${workdone} pages out of ${workload} pages.
-*line_break
-*temp percentage
-*set percentage workdone / workload
-*set percentage * 100
-*set percentage round(percentage)
-If converted to percentage, that's ${percentage} percent victory.
-*line_break
-*line_break
-Though you are not 100 percent sure, at least you attended every class and have everything vaguely in mind. Maybe you can rely on your memory for the stuff you're not covered, maybe not. 
-*page_break
 *goto morework
 
 
@@ -156,9 +141,8 @@ Though you are not 100 percent sure, at least you attended every class and have 
 
 *comment	can you realize the additional workload?
 *label thinktwice
-You can't stop thinking again and again about the key points in this class...
-*line_break
-Could there be anything you forget?...
+
+You can't stop thinking again and again about the key points in this class...could there be anything you forget?...
 *page_break
 
 *temp luck2
@@ -185,14 +169,13 @@ Could there be anything you forget?...
 		*set forget false
 		*goto stayup
 	*else
-		You just realize that there's another 40 pages to review! 
-		*line_break
-		Your professor told  about this additional material in the last class!
-		*line_break
+		You just realize that there's another 40 pages to review! Your professor told about this additional material in the last class!
+		
 		WTF!
-		*line_break
-		*line_break
-		At least you realized it.
+		
+		At least you realized it, better than finding it on your test.
+		
+		Workload increases by 40.
 		*set workload +40
 		*set forget false
 		*goto stayup
@@ -208,27 +191,38 @@ Could there be anything you forget?...
 Anyway, it's the time when you usually go to sleep.
 *line_break
 *line_break
-Now you are feeling around ${health} percent energetic.
-*line_break
-And you are prepared for ${workdone} pages out of ${workload} pages, which means you're around ${percentage} percent confident about the test.
-*line_break
-*line_break
+*if health > 70
+	You still feel energetic.
+	*goto stayup2
+*elsif health > 50
+	You feel normal, not energetic, but not tired either.
+	*goto stayup2
+*else
+	You feel tired.
+	*goto stayup2
+
+*label stayup2
+
+And you are prepared for ${workdone} pages out of ${workload} pages, which means you're around ${percentage} percent confident about the test. 
+
+The unfinished pages you still have some impression on them, at least you attended all classes. Maybe you can rely on your memory, maybe not.
+
 So, do you wish to stay up for the unfinished stuff? 
 *choice 
 	# I'm concerned about it...let me work for extra two hours to finish. Then I'll sleep.
 		You work for extra two hours. You feel tired. 
-		*line_break
-		*line_break
-		But at least, you cover some more pages. At least better than some of your stay-up-in-vain.
-		*line_break
-		*line_break
-		Nice.
+		
+		But at least, you cover some more pages. At least better than some of your stay-up-in-vain.	Nice.
+		
+		Time increase by two hours. Health decreases.
 		*set health -20
 		*set time +2
 		*set stayedup true
 		*goto stayup_result1
-	# I think I'm prepared. It's more important to sleep well for my important test. Go to sleep now.
+	# I think It's more important to sleep well for my important test. Go to sleep now.
 		Though you are a little bit nervous and exciting, luckily you have a nice sleep before your important final test.
+		
+		Health increases.
 		*set health +20
 		*set time +0
 		*set stayedup false
@@ -273,8 +267,7 @@ So, do you wish to stay up for the unfinished stuff?
 *set percentage2 * 100
 *set percentage2 round(percentage2)
 After the additional two hours, you finish ${workdone2} pages more, and now ${workdone} pages out of the overall ${workload} pages, which means you're around ${percentage2} percent confident about the test.
-*line_break
-*line_break
+
 Hope you can score at least that amount.
 *goto final
 
@@ -283,7 +276,9 @@ Hope you can score at least that amount.
 *label final
 *page_break
 
-Whether or not you're prepared, the day of your final test, is coming!
+Whether or not you're prepared...
+
+The day of your final test, is coming!
 *comment 	something health, prepared maybe, your state
 
 
@@ -293,19 +288,19 @@ Whether or not you're prepared, the day of your final test, is coming!
 *if stayedup = true
 	*if health >= 50
 		Though you stayed up, since you have some energy left yesterday night, you still feel ok about yourself.
-		*line_break
+		
 		*goto finalAluck
 	*elsif health >= 40
 		Though you stayed up, you are feeling not that bad thanks to some of your investments in your health.
-		*line_break
+		
 		*goto finalAluck
 	*else
 		Since you stayed up even when you're exhausted, you're not feeling well.
-		*line_break
+		
 		*goto finalAluck
 *else 
 	Since you slept early the day before, you feel kind of good about yourself.
-	*line_break
+	
 	*goto finalBluck
 
 
@@ -323,19 +318,27 @@ Whether or not you're prepared, the day of your final test, is coming!
 *label finalAluck2
 *if	badluckStayedUp = 1
 	*if health >= 50
-		It seems staying up has some minor effect on your test.
+		It seems staying up has some minor effect on your test. You make a little mistake on a minor question. 
+		
+		Bad luck for staying up. Score decreases for a minor amount.
 		*set score -3
 		*goto forgetOrNot
 	*elsif health >= 30
 		It seems staying up has a little effect on your test. You can't remember a thing or two.
+		
+		Bad luck for staying up. Score decreases a little.
 		*set score -5
 		*goto forgetOrNot
 	*else
-		You're trying to maintain conscious during your test...
+		You're trying to maintain conscious during your test...You can't recall the answer to some questions that you usually know.
+		
+		Bad luck for staying up. Score decreases.
 		*set score -10
 		*goto forgetOrNot
 *elsif badluckStayedUp = 0
 	You feel kind of lucky that you're able to manage to recall almost everything in your mind.
+
+	Good luck for staying up. Score not affected.
 	*set score -0
 	*goto forgetOrNot
 
@@ -352,10 +355,14 @@ Whether or not you're prepared, the day of your final test, is coming!
 *label finalBluck2
 *if goodluckSleep = 1
 	It seems a good night's sleep has some magic power that you remembered something you aren't sure before.
+	
+	Good luck for sleeping well. Score increases for a minor amount.
 	*set score +3
 	*goto forgetOrNot
 *else
 	It seems a good night's sleep gives you some good luck, at least you remember a little stuff, though not very sure.
+	
+	Good luck for sleeping well. Score increases for a tiny amount.
 	*set score +1
 	*goto forgetOrNot
 
@@ -366,12 +373,12 @@ Whether or not you're prepared, the day of your final test, is coming!
 *if forget = true
 	*set workload +40
 	When reading a quiz, you suddenly realize that you actually forget to review some additional 40 pages that your professor told you on the last class...
-	*line_break
-	*line_break
+	
 	WTF!
-	*line_break
-	*line_break
+	
 	Despite the anxiety at first, you try your best to make up something, and manage to continue working on the stuff you know.
+	
+	Workload increases by 40.
 	*goto final_calc
 *else
 	*if moreToReview = true
@@ -390,15 +397,21 @@ Whether or not you're prepared, the day of your final test, is coming!
 *set score3 round(score2 / workload)
 *set score +score3
 *page_break
-At last, the test is over! You have some good relax for a couple of days, trying not to think about it, because it's time to enjoy, right?
+At last, the test is over! 
+*line_break
+Have fun! You deserve it.
+
+You have some good relax for a couple of days.
+
 *page_break
-Several days later, you know the scores are available now.
+Several days later, the scores are available to see now.
+
 How do you feel about it?
 *fake_choice
-	# Exciting and eager to know the result.
-	# A little bit nervous.
-	# Half-half.
+	# Let me know the result!
+	# Good.
 	# Not special.
+	# A little bit nervous.
 	# Bad.
 
 *label final_result
@@ -408,19 +421,29 @@ The score of your final test is: ${score} out of 100!
 *line_break
 *line_break
 *if score >= 95
-	Outstanding! You're so happy now! You're sure you will be enjoying a very nice vacation, and the battle for this last test will become a shining memory in your life.
+	Outstanding! 
+
+	You're so happy now! You're sure you will be enjoying a very nice vacation, and the battle for this last test will become a shining memory in your life.
 	*finish
 *elsif score >= 90
-	Well done! You believe you can enjoy a very nice vacation now from now on! It will also be good for your future success.
+	Well done! 
+
+	You believe you can enjoy a very nice vacation now from now on! It will also be good for your future success.
 	*finish
 *elsif score >= 85
-	Good job! You can't believe you almost prepared everything just in yesterday! You think you can enjoy a nice vacation from now on.
+	Good job! 
+
+	You can't believe you almost prepared everything just in yesterday! You think you can enjoy a nice vacation from now on.
 	*finish
 *elsif score >= 80
+	Good.
+
 	The result is beyond your expetation, since you almost prepared everything during yesterday! You think you can enjoy a nice vacation from now on.
 	*finish
 *else
-	The result is not that bad. To be honest, that's amazing, since you almost prepared everything during yesterday! At least you can start enjoying your vacation now.
+	Not too bad. 
+
+	Actually, that's amazing, since you almost prepared everything during yesterday! At least you can start enjoying your vacation now.
 	*finish
 
 
