@@ -17,30 +17,41 @@
 *create badluckStayedUp 0
 *create goodluckSleep 0
 
-*create score 45
+*create score 50
 
-You wake up in a cloudy morning, realizing that it is the day before your last test. 
+You wake up from a weird dream, realizing that it is the day before your last test. 
 *line_break
 *line_break
-You feel a bit nervous because you need to review these intimidating 220 pages and keep them in mind, and your GPA would be crucial for your future success. You are also a little exciting for the upcoming vacation thereafter, so you really wish to at least pass the test to be able to enjoy it. 
+You've beaten five other tests in a row. They are not that hard for you, and you think you did them all pretty well. The only thing matter now is this last test, the only class that you devoted so much but still don't get the talent to master. 
 *line_break
 *line_break
-You will have around 12 hours to work on these 220 pages, but you also need to set some strategies to balance your work with your health.
+Looking outside the window of your dormitory, you see some students hauling their suitcases, chatting about some exciting plans in their winter break. You are eager for the break as well, wishing to enjoy your time with your friends and your parents. You don't want to let a bad score to ruin your vacation, so you decide to fight hard to survive.
+*page_break
+Now it's 8 am in the morning, and you will be reviewing some intimidating 220 pages in the textbook of this class. You really wish you could use up all the 16 hours before midnight, but you're not a superman or superwoman, you need time to ride between places, take a shower, think wildly, etc, and at times you can lose focus as well. Then that's normally 12 hours to rely on at max, not to mention you haven't count the time of having food, and maybe more. 
+*line_break
+*line_break
+Time is so precious.
 *goto food
 
 
 *label food
 *page_break
-As for food, would you like to have some fast food but unhealthy food to save your time? Or you still want to stick to some healthy food, doubling your time for meal?
+As for food, you can mainly choose between some fast food and some healthy food. Usually you go for something healthy, becuase it will keep you refreshed and maybe concentrate longer, increasing your efficiency in the long run. But those dining spots are all a little far, and they take more time to wait for.
+*line_break
+*line_break
+Since your time is so precious, you feel a little concerned about your normal choice of food. If you go for some fast food, you can save an extra one hour in dining, though the food is a little high in fat and a little too sweet. 
+*line_break
+*line_break
+So, what kind of food do you want to take today?
 
 *choice 
-	# Go for some fast food. It will only take an hour in the whole day.
-		You feed on some oily fast food, it saves a precious one hour compared to your normal diet, but you feel a little uneasy, making you want to have something fresher the next time.
+	# I want to have some fast food to save time. Every minute counts!
+		You choose some fast food, it saves a precious one hour compared to your normal diet. But you feel a little uneasy because the food is a little oily and dry, so you go to the fountain and have some drink there. You feel much better then, though not as good as usual. You go back to your seat in the library, and continue going over the pages.
 		*set health -5
 		*set time -1
 		*goto exercise
-	# Go for some healthy food. It will cost two hours in the whole day.
-		You walk a little far to get some good healthy food. It costs more bucks and two hours in your day, but you get some enjoyment on the taste, and you're glad you feel quite refreshed and energetic.
+	# I still want to have some healthy food. I think I'm not that urgent.
+		You ride your bike to the spots where you usually get some good healthy food. It costs more bucks and two hours in total in your day. The taste is not super good, but acceptable. At least it's fresh and make you feel energetic. You feel like you can finish the pages a little faster.
 		*set health +10
 		*set time -2
 		*goto exercise
